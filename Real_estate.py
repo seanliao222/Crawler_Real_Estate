@@ -146,8 +146,8 @@ if __name__ == '__main__':
     # In[5]:
 
     #若已經之前已整合過資料可以再把資料讀出來
-    dataframes = pd.read_csv('df_all.csv')
-    print(dataframes.dtypes)
+    #dataframes = pd.read_csv('df_all.csv')
+    #print(dataframes.dtypes)
 
 
     # In[6]:
@@ -161,36 +161,33 @@ if __name__ == '__main__':
 
 
     # In[7]:
-
-
-    
-        #計算【總件數】【總車位數】(透過交易筆棟數)【平均總價元】【平均車位總價元】
-        #車位要從欄位“交易筆棟數“去擷取
-        car_list = []
-        for car in range(len(df_filter['transaction pen number'])):
-            temp_str = df_filter['transaction pen number'].iloc[car]
-            car_list.append(int(temp_str[temp_str.find('車位') + 2:len(temp_str)]))
-        #總件數        
-        tot_case_cnt = df_filter['serial number'].count()
-        #總件數金額
-        tot_case_price = sum(df_filter['total price Yuan'])
-        #計算車位數 
-        car_tot_cnt = sum(car_list)
-        #計算車位價格（若有車位才計算），車位價格須用總價減去建築物總價(坪數*單位價格)
-        car_price = []
-        for case in range(tot_case_cnt):
-            if car_list[case] > 0:
-                if df_filter['the berth total price Yuan'].iloc[case] > 0:
-                    car_price.append(df_filter['the berth total price Yuan'].iloc[case])
-                else:
-                    car_price.append(df_filter['total price Yuan'].iloc[case] - 
+    #計算【總件數】【總車位數】(透過交易筆棟數)【平均總價元】【平均車位總價元】
+    #車位要從欄位“交易筆棟數“去擷取
+    car_list = []
+    for car in range(len(df_filter['transaction pen number'])):
+        temp_str = df_filter['transaction pen number'].iloc[car]
+        car_list.append(int(temp_str[temp_str.find('車位') + 2:len(temp_str)]))
+    #總件數        
+    tot_case_cnt = df_filter['serial number'].count()
+    #總件數金額
+    tot_case_price = sum(df_filter['total price Yuan'])
+    #計算車位數 
+    car_tot_cnt = sum(car_list)
+    #計算車位價格（若有車位才計算），車位價格須用總價減去建築物總價(坪數*單位價格)
+    car_price = []
+    for case in range(tot_case_cnt):
+        if car_list[case] > 0:
+            if df_filter['the berth total price Yuan'].iloc[case] > 0:
+                car_price.append(df_filter['the berth total price Yuan'].iloc[case])
+            else:
+                car_price.append(df_filter['total price Yuan'].iloc[case] - 
                              ((df_filter['building shifting total area'].iloc[case] - df_filter['berth shifting total area square meter'].iloc[case]) * 
                               df_filter['the unit price a Yuan square meter'].iloc[case]))
-        car_real_tot_price = sum(car_price)
-        #計算每件案件平均價格
-        tot_case_price_avg = tot_case_price / tot_case_cnt
-        #計算車位平均價格
-        car_real_tot_price_avg = car_real_tot_price / car_tot_cnt
+    car_real_tot_price = sum(car_price)
+    #計算每件案件平均價格
+    tot_case_price_avg = tot_case_price / tot_case_cnt
+    #計算車位平均價格
+    car_real_tot_price_avg = car_real_tot_price / car_tot_cnt
 
 
     # In[8]:
