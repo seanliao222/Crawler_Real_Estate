@@ -32,7 +32,7 @@ def real_estate_crawler(year, season,files_name,txn_type):
             if not os.path.isdir(dir_path):
                 os.makedirs(dir_path)
             with open(file_dir, 'w', newline='',encoding='utf-8-sig') as csvfile:
-                #部分資料欄位出現錯誤符號導致欄位錯位，直接透過request處理，在寫入CSV
+                #部分資料欄位出現錯誤符號導致欄位錯位，直接透過request處理，再寫入CSV
                 csvfile.writelines(str(res.text.replace('transaction year, month and day', 'transaction year month and day').replace('/',' ')))
         else: print('查無' + str(year) + '年第'+ str(season) +'季資料')
         break
@@ -118,7 +118,7 @@ if __name__ == '__main__':
 ~~~~
 
 
-# In[4]:整合資料
+# In[4]:整合及梳理資料
 ~~~~{python}
     # 指定要列出所有檔案的目錄
     mypath = 'real_estate'
